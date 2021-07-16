@@ -94,7 +94,6 @@ class CropProvider(activity: ImagePickerActivity, private val launcher: (Intent)
      */
     fun isCropFreeStyleEnabled() = cropFreeStyle
 
-
     /**
      * Check if crop should be enabled or not
      *

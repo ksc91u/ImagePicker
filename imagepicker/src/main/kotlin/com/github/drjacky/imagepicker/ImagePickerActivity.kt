@@ -13,7 +13,6 @@ import com.github.drjacky.imagepicker.provider.CameraProvider
 import com.github.drjacky.imagepicker.provider.CompressionProvider
 import com.github.drjacky.imagepicker.provider.CropProvider
 import com.github.drjacky.imagepicker.provider.GalleryProvider
-import com.github.drjacky.imagepicker.util.FileUriUtils
 import com.github.drjacky.imagepicker.util.resolveMime
 import java.io.File
 
@@ -212,7 +211,7 @@ class ImagePickerActivity : AppCompatActivity() {
             // Delete Camera file after Compress. Else there will be two image for the same action.
             // In case of Gallery Provider, we will get original image path, so we will not delete that.
             file.delete()
-            //it.delete()
+            // it.delete()
         }
 
         // If crop file is not null, Delete it after crop
