@@ -13,6 +13,8 @@ import com.github.drjacky.imagepicker.provider.CameraProvider
 import com.github.drjacky.imagepicker.provider.CompressionProvider
 import com.github.drjacky.imagepicker.provider.CropProvider
 import com.github.drjacky.imagepicker.provider.GalleryProvider
+import com.github.drjacky.imagepicker.util.FileUriUtils
+import com.github.drjacky.imagepicker.util.resolveMime
 import java.io.File
 
 /**
@@ -158,8 +160,10 @@ class ImagePickerActivity : AppCompatActivity() {
      */
     fun setImage(uri: Uri, isCamera: Boolean) {
         mImageUri = uri
+        val mime = uri.resolveMime(this)
         when {
-            mCropProvider.isCropEnabled() -> mCropProvider.startIntent(
+            mCropProvider.isCropEnabled() && mime?.lowercase()
+                ?.contains("gif") == false -> mCropProvider.startIntent(
                 uri = uri,
                 cropOval = mCropProvider.isCropOvalEnabled(),
                 cropFreeStyle = mCropProvider.isCropFreeStyleEnabled(),

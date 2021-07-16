@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                 .galleryMimeTypes( // no gif images at all
                     mimeTypes = arrayOf(
                         "image/png",
+                        "image/gif",
                         "image/jpg",
                         "image/jpeg"
                     )

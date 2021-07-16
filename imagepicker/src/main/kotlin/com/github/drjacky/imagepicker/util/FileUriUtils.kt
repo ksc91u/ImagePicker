@@ -24,7 +24,7 @@ import java.io.*
 object FileUriUtils {
 
     fun getRealPath(context: Context, uri: Uri): String? {
-        var path = getPathFromLocalUri(context, uri)
+        var path: String? = getRealPathFromURI(context, uri)
         if (path == null) {
             path = getPathFromRemoteUri(context, uri)
         }
@@ -168,7 +168,7 @@ object FileUriUtils {
         var outputStream: OutputStream? = null
         var success = false
         try {
-            val extension = getImageExtension(uri)
+            val extension = FileUriUtils.getRealPath(context, uri)
             inputStream = context.contentResolver.openInputStream(uri)
             file = FileUtil.getImageFile(context, context.cacheDir, extension)
             if (file == null) return null
@@ -265,5 +265,24 @@ object FileUriUtils {
      */
     private fun isGooglePhotosUri(uri: Uri): Boolean {
         return "com.google.android.apps.photos.content" == uri.authority
+    }
+
+
+    fun getRealPathFromURI(context: Context, uri: Uri): String {
+        var cursor: Cursor? = context.contentResolver.query(uri, null, null, null, null)
+        if (cursor == null) return ""
+        cursor.moveToFirst()
+        var document_id = cursor.getString(0)
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
+        cursor.close()
+        cursor = context.getContentResolver().query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            null, MediaStore.Images.Media._ID + " = ? ", arrayOf(document_id), null
+        )
+        if (cursor == null) return ""
+        cursor.moveToFirst()
+        val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+        cursor.close()
+        return path
     }
 }
